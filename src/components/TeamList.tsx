@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { Team } from "@/types/team";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import TeamDialog from "./TeamDialog";
 import { deleteTeam } from "@/features/teams/teamSlice";
 import { Pencil, Trash2, Plus } from "lucide-react";
@@ -40,48 +45,52 @@ const TeamList = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-simibold">Teams</h1>
-        <Button onClick={openDialogToAdd}><Plus className="w-4 h-4"/> Add Team</Button>
+        <h1 className="text-3xl font-simibold">Teams</h1>
+        <Button onClick={openDialogToAdd}>
+          <Plus className="w-4 h-4 mr-1" /> Add Team
+        </Button>
       </div>
+
       {teams.length === 0 ? (
         <p className="text-muted-foreground text-center">No teams available.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {teams.map((team) => (
-            <Card key={team.id} className="shadow-sm border-muted">
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-base font-semibold text-primary">
-                      {team.name}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground">
-                      {team.region}, {team.country}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="hover:bg-accent"
-                      onClick={() => handleEdit(team)}
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="hover:bg-red-50"
-                      onClick={() => setTeamToDelete(team)}
-                    >
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </div>
+            <Card
+              key={team.id}
+              className="rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 border border-border"
+            >
+              <CardHeader className="flex flex-row items-start justify-between gap-2 pb-2">
+                <div>
+                  <CardTitle className="text-lg font-semibold text-foreground">
+                    {team.name}
+                  </CardTitle>
+                  <p className="text-xs text-muted-foreground">
+                    {team.region}, {team.country}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="hover:bg-accent"
+                    onClick={() => handleEdit(team)}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="hover:bg-red-100"
+                    onClick={() => setTeamToDelete(team)}
+                  >
+                    <Trash2 className="w-4 h-4 text-destructive" />
+                  </Button>
                 </div>
               </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-1">
+              <CardContent className="pt-0 text-sm text-muted-foreground">
                 <p>
                   <span className="font-medium text-foreground">Players:</span>{" "}
                   {team.playerIds.length}
