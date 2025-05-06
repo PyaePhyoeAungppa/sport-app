@@ -119,11 +119,13 @@ const TeamDialog = ({ open, onClose, team }: TeamDialogProps) => {
     [team, teams, dispatch, onClose, form]
   );
 
-  const selectedPlayerIds =
+  const watchedPlayerIds =
     useWatch({
       control: form.control,
       name: "playerIds",
     }) || [];
+
+  const selectedPlayerIds = useMemo(() => watchedPlayerIds, [watchedPlayerIds]);
 
   const togglePlayer = useCallback(
     (playerId: number) => {
