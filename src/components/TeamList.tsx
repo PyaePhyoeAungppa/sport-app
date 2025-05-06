@@ -47,7 +47,7 @@ const TeamList = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-simibold">Teams</h1>
+        <h1 className="text-3xl">Teams</h1>
         <Button onClick={openDialogToAdd}>
           <Plus className="w-4 h-4 mr-1" /> Add Team
         </Button>

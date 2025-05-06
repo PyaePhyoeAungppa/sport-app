@@ -42,7 +42,7 @@ const PlayersList = () => {
   if (isLoading && players.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-3xl font-semibold">Players</h1>
+        <h1 className="text-3xl">Players</h1>
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className="h-32 w-full rounded-xl" />
@@ -58,7 +58,7 @@ const PlayersList = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-semibold">Players</h1>
+      <h1 className="text-3xl">Players</h1>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {players.map((player: Player) => (
           <Card
