@@ -5,16 +5,17 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { Team } from "@/types/team";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import TeamDialog from "./TeamDialog";
 import { deleteTeam } from "@/features/teams/teamSlice";
 import { Pencil, Trash2 } from "lucide-react";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 const TeamList = () => {
   const dispatch = useAppDispatch();
   const { teams } = useAppSelector((state) => state.teams);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
 
   const openDialogToAdd = () => {
     setSelectedTeam(null);
@@ -26,8 +27,11 @@ const TeamList = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    dispatch(deleteTeam(id));
+  const confirmDeleteTeam = () => {
+    if (teamToDelete) {
+      dispatch(deleteTeam(teamToDelete.id));
+      setTeamToDelete(null);
+    }
   };
 
   const closeDialog = () => {
@@ -41,11 +45,11 @@ const TeamList = () => {
         <h1>Teams</h1>
         <Button onClick={openDialogToAdd}>+ Add Team</Button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {teams.length === 0 ? (
-          <p className="text-muted-foreground text-center">No teams available.</p>
-        ) : (
-          teams.map((team) => (
+      {teams.length === 0 ? (
+        <p className="text-muted-foreground text-center">No teams available.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {teams.map((team) => (
             <Card key={team.id} className="shadow-sm border-muted">
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
@@ -70,7 +74,7 @@ const TeamList = () => {
                       size="icon"
                       variant="ghost"
                       className="hover:bg-red-50"
-                      onClick={() => handleDelete(team.id)}
+                      onClick={() => setTeamToDelete(team)}
                     >
                       <Trash2 className="w-4 h-4 text-destructive" />
                     </Button>
@@ -84,14 +88,21 @@ const TeamList = () => {
                 </p>
               </CardContent>
             </Card>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
       <TeamDialog
         open={isDialogOpen}
         onClose={closeDialog}
         team={selectedTeam}
+      />
+      <ConfirmDialog
+        open={!!teamToDelete}
+        title="Delete Team"
+        description={`Are you sure you want to delete "${teamToDelete?.name}"?`}
+        onCancel={() => setTeamToDelete(null)}
+        onConfirm={confirmDeleteTeam}
       />
     </div>
   );

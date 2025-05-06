@@ -4,12 +4,7 @@ import { useState, useEffect } from "react";
 import { Player } from "@/types/player";
 import { useGetPlayersQuery } from "@/features/players/playersApi";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const PlayersList = () => {
@@ -26,7 +21,12 @@ const PlayersList = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setAllPlayers((prev) => [...prev, ...data.data]);
+      setAllPlayers((prev) => {
+        const newPlayers = data.data.filter(
+          (p) => !prev.some((existing) => existing.id === p.id)
+        );
+        return [...prev, ...newPlayers];
+      });
       setCursor(data.meta.next_cursor ?? null);
     }
   }, [data]);
@@ -53,7 +53,7 @@ const PlayersList = () => {
 
   return (
     <div className="space-y-4 mt-4">
-        <h1>Players</h1>
+      <h1>Players</h1>
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {allPlayers.map((player: Player) => (

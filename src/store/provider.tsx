@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { store, persistor } from './index'
 import { PersistGate } from 'redux-persist/integration/react'

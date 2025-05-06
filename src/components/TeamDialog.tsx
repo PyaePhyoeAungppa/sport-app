@@ -1,5 +1,6 @@
 "use client";
 
+import { useWatch } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -118,7 +119,11 @@ const TeamDialog = ({ open, onClose, team }: TeamDialogProps) => {
     [team, teams, dispatch, onClose, form]
   );
 
-  const selectedPlayerIds = form.watch("playerIds") || [];
+  const selectedPlayerIds =
+    useWatch({
+      control: form.control,
+      name: "playerIds",
+    }) || [];
 
   const togglePlayer = useCallback(
     (playerId: number) => {

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { login, logout } from "@/features/auth/authSlice";
+import { login } from "@/features/auth/authSlice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,7 +23,6 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const { username, isAuthenticated } = useAppSelector((state) => state.auth);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

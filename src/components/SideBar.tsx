@@ -1,12 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/features/auth/authSlice";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { persistor } from "@/store";
-// import { useState } from "react";
-// import { cn } from "@/lib/utils";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 type View = "teams" | "players";
 
@@ -18,10 +18,12 @@ interface SidebarProps {
 const Sidebar = ({ currentView, setCurrentView }: SidebarProps) => {
   const dispatch = useAppDispatch();
   const { username } = useAppSelector((state) => state.auth);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogoutConfirm = () => {
     dispatch(logout());
     persistor.purge();
+    setShowConfirmLogout(false);
   };
 
   return (
@@ -55,9 +57,20 @@ const Sidebar = ({ currentView, setCurrentView }: SidebarProps) => {
       {/* Bottom: Logout */}
       <div>
         <Separator className="mb-4" />
-        <Button variant="destructive" className="w-full" onClick={handleLogout}>
+        <Button
+          variant="destructive"
+          className="w-full"
+          onClick={() => setShowConfirmLogout(true)}
+        >
           Logout
         </Button>
+        <ConfirmDialog
+          open={showConfirmLogout}
+          title="Confirm Logout"
+          description="Are you sure you want to log out?"
+          onCancel={() => setShowConfirmLogout(false)}
+          onConfirm={handleLogoutConfirm}
+        />
       </div>
     </div>
   );
