@@ -29,11 +29,17 @@ import {
 } from "@/features/teams/teamSlice";
 import { useCallback, useEffect, useMemo } from "react";
 import SelectablePlayersList from "./SelectablePlayersList";
+import { countries } from "@/constants/countries";
 
 const teamSchema = z.object({
   name: z.string().min(1, "Team name is required"),
   region: z.string().min(1, "Region is required"),
-  country: z.string().min(1, "Country is required"),
+  country: z
+    .string()
+    .min(1, "Country is required")
+    .refine((val) => countries.includes(val), {
+      message: "Invalid country name",
+    }),
   playerIds: z.array(z.number()).optional(),
 });
 
@@ -198,7 +204,17 @@ const TeamDialog = ({ open, onClose, team }: TeamDialogProps) => {
                   <FormItem className="w-1/2">
                     <FormLabel>Country</FormLabel>
                     <FormControl>
-                      <Input placeholder="Country" {...field} />
+                      <select
+                        {...field}
+                        className="w-full border rounded-md px-3 py-2 bg-background text-foreground"
+                      >
+                        <option value="">Select a country</option>
+                        {countries.map((country) => (
+                          <option key={country} value={country}>
+                            {country}
+                          </option>
+                        ))}
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

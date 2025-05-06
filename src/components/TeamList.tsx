@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TeamDialog from "./TeamDialog";
 import { deleteTeam } from "@/features/teams/teamSlice";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Plus } from "lucide-react";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 const TeamList = () => {
@@ -42,8 +42,8 @@ const TeamList = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1>Teams</h1>
-        <Button onClick={openDialogToAdd}>+ Add Team</Button>
+        <h1 className="text-2xl font-simibold">Teams</h1>
+        <Button onClick={openDialogToAdd}><Plus className="w-4 h-4"/> Add Team</Button>
       </div>
       {teams.length === 0 ? (
         <p className="text-muted-foreground text-center">No teams available.</p>
